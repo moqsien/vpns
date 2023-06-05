@@ -1,4 +1,7 @@
 # coding=UTF-8
+import sys
+sys.path.append(".")
+
 from urllib.parse import urljoin
 from lxml import etree
 from free.common.proxy import get_proxy, set_proxy, SiteBase
@@ -12,6 +15,9 @@ class SiteFreeNode(SiteBase):
     def get_resp(self, url: str)->str:
         resp  = self.request(url, useproxy=True)
         html = etree.HTML(resp)
+        if html is None:
+            print(f"Download [{url}] failed.")
+            return ""
         result = html.xpath('//table[@class="box"]//a[1]/@href')
         if len(result) > 0:
             url = result[0]
@@ -19,6 +25,9 @@ class SiteFreeNode(SiteBase):
                 url = urljoin(self.host, url)
             resp = self.request(url, useproxy=True)
             html = etree.HTML(resp)
+            if html is None:
+                print(f"Download [{url}] failed.")
+                return ""
             result = html.xpath('//td[@id="text"]//a[1]/@href')
             if len(result) > 0:
                 url = result[0]
@@ -26,6 +35,9 @@ class SiteFreeNode(SiteBase):
                     url = urljoin(self.host, url)
                 resp = self.request(url, useproxy=True)
                 html = etree.HTML(resp)
+                if html is None:
+                    print(f"Download [{url}] failed.")
+                    return ""
                 result = html.xpath('//p//text()')
                 return "".join(result)
         return ""
@@ -47,7 +59,7 @@ class SiteFreeNode(SiteBase):
             for line in lines:
                 if verify_content(line):
                     result.append(line)
-        return "".join(result)
+        return "".join(result).encode("utf-8")
     
     def url(self)->str:
         return self.host
@@ -56,8 +68,6 @@ class SiteFreeNode(SiteBase):
         return self.host
 
 if __name__ == "__main__":
-    import sys
-    sys.path.append("..")
     if get_proxy() == dict():
         set_proxy("http://localhost:2019")
     s = SiteFreeNode()

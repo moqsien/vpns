@@ -1,4 +1,7 @@
 # coding=UTF-8
+import sys
+sys.path.append(".")
+
 from lxml import etree
 from free.common.proxy import get_proxy, set_proxy, SiteBase
 
@@ -15,6 +18,9 @@ class SiteV2Cross(SiteBase):
         print(f"processing {self.url}...")
         content = self.get_resp()
         html = etree.HTML(content)
+        if html is None:
+            print(f"Download [{self.url}] failed.")
+            return ""
         result = html.xpath("//pre//text()")
         return "".join(result)
     
@@ -25,8 +31,6 @@ class SiteV2Cross(SiteBase):
         return self.url
 
 if __name__ == "__main__":
-    import sys
-    sys.path.append("..")
     if get_proxy() == dict():
         set_proxy("http://localhost:2019")
     s = SiteV2Cross()

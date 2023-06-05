@@ -1,4 +1,7 @@
 # coding=UTF-8
+import sys
+sys.path.append(".")
+
 import requests
     
 class DownloadGeoInfo(object):
@@ -19,7 +22,5 @@ class DownloadGeoInfo(object):
         return ""
 
 if __name__ == '__main__':
-    import sys
-    sys.path.append("..")
     d = DownloadGeoInfo()
     d.parse()

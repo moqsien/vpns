@@ -1,4 +1,7 @@
 # coding=UTF-8
+import sys
+sys.path.append(".")
+
 import base64
 from datetime import datetime
 from free.common.proxy import set_proxy, SiteBase
@@ -61,8 +64,6 @@ class SiteFreeSubscribes(SiteBase):
     
     
 if __name__ == "__main__":
-    import sys
-    sys.path.append("..")
     set_proxy("http://localhost:2019")
     s = SiteFreeSubscribes()
     s.parse()

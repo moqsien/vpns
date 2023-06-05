@@ -1,4 +1,7 @@
 # coding=UTF-8
+import sys
+sys.path.append(".")
+
 import json
 from lxml import etree
 from free.common.proxy import SiteBase
@@ -18,6 +21,9 @@ class SiteMianfeifq(SiteBase):
         print(f"processing {self.url}...")
         html_str = self.get_resp()
         html = etree.HTML(html_str)
+        if html is None:
+            print(f"Download [{self.url}] failed.")
+            return ""
         result = html.xpath("//code/span/text()")
         return "\n".join(result)
     
@@ -28,7 +34,5 @@ class SiteMianfeifq(SiteBase):
         return self.url
     
 if __name__ == "__main__":
-    import sys
-    sys.path.append("..")
     s = SiteMianfeifq()
     print(s.parse())

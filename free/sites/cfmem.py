@@ -1,4 +1,8 @@
 # coding=UTF-8
+import os
+import sys
+sys.path.append(".")
+    
 import base64
 from lxml import etree
 from free.common.proxy import SiteBase
@@ -11,6 +15,9 @@ class SiteCfmem(SiteBase):
     def get_resp(self)->str:
         resp = self.request(self.url)
         html = etree.HTML(resp)
+        if html is None:
+            print(f"Download [{self.url}] failed.")
+            return ""
         result = html.xpath('//h2[@class="entry-title"]/a/@href')
         if len(result) > 0:
             url = result[0]
@@ -22,6 +29,9 @@ class SiteCfmem(SiteBase):
         print(f"processing {self.url}...")
         content = self.get_resp()
         html = etree.HTML(content)
+        if html is None:
+            print(f"Download [{self.url}] failed.")
+            return ""
         result = html.xpath('//span[@role="presentation"]/text()')
         if len(result) > 0:
             try:
@@ -38,7 +48,5 @@ class SiteCfmem(SiteBase):
         return self.url
         
 if __name__ == '__main__':
-    import sys
-    sys.path.append("..")
     s = SiteCfmem()
     print(s.parse())
