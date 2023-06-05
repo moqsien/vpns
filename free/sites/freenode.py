@@ -1,37 +1,31 @@
-import io
-import sys
-sys.path.append("..")
-
+# coding=UTF-8
 from urllib.parse import urljoin
-import requests
 from lxml import etree
-from vpns.common.proxy import get_proxy, set_proxy
-from vpns.common.verify import verify_content
+from free.common.proxy import get_proxy, set_proxy, SiteBase
+from free.common.verify import verify_content
 
-# https://www.freefq.com
-class SiteFreeNode:
+class SiteFreeNode(SiteBase):
     def __init__(self):
+        super(SiteFreeNode, self).__init__()
         self.host = "https://freefq.com/"
         
     def get_resp(self, url: str)->str:
-        resp  = requests.get(url, proxies=get_proxy(), timeout=120)
-        html = etree.HTML(resp.text)
+        resp  = self.request(url, useproxy=True)
+        html = etree.HTML(resp)
         result = html.xpath('//table[@class="box"]//a[1]/@href')
         if len(result) > 0:
             url = result[0]
             if not url.startswith('https://'):
                 url = urljoin(self.host, url)
-            print(url)
-            resp = requests.get(url, proxies=get_proxy(), timeout=120)
-            html = etree.HTML(resp.text)
+            resp = self.request(url, useproxy=True)
+            html = etree.HTML(resp)
             result = html.xpath('//td[@id="text"]//a[1]/@href')
             if len(result) > 0:
                 url = result[0]
                 if not url.startswith('https://'):
                     url = urljoin(self.host, url)
-                print(url)
-                resp = requests.get(url, proxies=get_proxy(), timeout=120)
-                html = etree.HTML(resp.text)
+                resp = self.request(url, useproxy=True)
+                html = etree.HTML(resp)
                 result = html.xpath('//p//text()')
                 return "".join(result)
         return ""
@@ -47,7 +41,7 @@ class SiteFreeNode:
 			"https://freefq.com/free-trojan/"
         ]
         for url in url_list:
-            print(url)
+            print(f"processing {url}")
             content = self.get_resp(url)
             lines = content.split('\n')
             for line in lines:
@@ -57,9 +51,13 @@ class SiteFreeNode:
     
     def url(self)->str:
         return self.host
+    
+    def __str__(self) -> str:
+        return self.host
 
 if __name__ == "__main__":
-    # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')
+    import sys
+    sys.path.append("..")
     if get_proxy() == dict():
         set_proxy("http://localhost:2019")
     s = SiteFreeNode()

@@ -1,37 +1,44 @@
+# coding=UTF-8
 import base64
-import io
-import sys
-import requests
 from lxml import etree
+from free.common.proxy import SiteBase
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
-
-class SitCfmem:
+class SiteCfmem(SiteBase):
     def __init__(self):
+        super(SiteCfmem, self).__init__()
         self.url = "https://www.cfmem.com/search/label/free"
         
     def get_resp(self)->str:
-        resp = requests.get(self.url)
-        html = etree.HTML(resp.text)
+        resp = self.request(self.url)
+        html = etree.HTML(resp)
         result = html.xpath('//h2[@class="entry-title"]/a/@href')
         if len(result) > 0:
             url = result[0]
-            resp = requests.get(url)
-            return resp.text
+            resp = self.request(url)
+            return resp
         return ""
             
     def parse(self)->str:
+        print(f"processing {self.url}...")
         content = self.get_resp()
         html = etree.HTML(content)
         result = html.xpath('//span[@role="presentation"]/text()')
         if len(result) > 0:
-            return base64.b64decode(result[0]).decode('utf-8')
+            try:
+                return base64.b64decode(result[0]).decode('utf-8')
+            except Exception as e:
+                print(f"Download [{self.url}] failed.")
+                print(e)
         return ""
     
     def url(self)->str:
         return self.url
+    
+    def __str__(self) -> str:
+        return self.url
         
 if __name__ == '__main__':
-    # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
-    s = SitCfmem()
+    import sys
+    sys.path.append("..")
+    s = SiteCfmem()
     print(s.parse())

@@ -1,22 +1,18 @@
-import io
-import os
-import sys
-sys.path.append("..")
-
-import requests
+# coding=UTF-8
 from lxml import etree
-from vpns.common.proxy import get_proxy, set_proxy
+from free.common.proxy import get_proxy, set_proxy, SiteBase
 
-class SiteV2Cross:
+class SiteV2Cross(SiteBase):
     def __init__(self):
+        super(SiteV2Cross, self).__init__()
         self.url  = "https://v2cross.com/archives/1884"
         
     def get_resp(self)->str:
-        print(get_proxy())
-        resp = requests.get(self.url, proxies=get_proxy())
-        return resp.text
+        resp =  self.request(self.url, useproxy=True)
+        return resp
     
     def parse(self)->str:
+        print(f"processing {self.url}...")
         content = self.get_resp()
         html = etree.HTML(content)
         result = html.xpath("//pre//text()")
@@ -24,9 +20,13 @@ class SiteV2Cross:
     
     def url(self)->str:
         return self.url
+    
+    def __str__(self) -> str:
+        return self.url
 
 if __name__ == "__main__":
-    # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
+    import sys
+    sys.path.append("..")
     if get_proxy() == dict():
         set_proxy("http://localhost:2019")
     s = SiteV2Cross()

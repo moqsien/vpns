@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 VmessScheme = "vmess://"
 VlessScheme = "vless://"
 TrojanScheme = "trojan://"
