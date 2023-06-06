@@ -3,15 +3,17 @@ import sys
 sys.path.append(".")
 
 import requests
+
+geoinfo_download_urls = {
+    "geoip.db":    "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2Flyc8503%2Fsing-box-rules%2Freleases%2Flatest%2Fdownload%2Fgeoip.db",
+    "geosite.db":  "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2Flyc8503%2Fsing-box-rules%2Freleases%2Flatest%2Fdownload%2Fgeosite.db",
+    "geoip.dat":   "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2FLoyalsoldier%2Fv2ray-rules-dat%2Freleases%2Flatest%2Fdownload%2Fgeoip.dat",
+    "geosite.dat": "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2FLoyalsoldier%2Fv2ray-rules-dat%2Freleases%2Flatest%2Fdownload%2Fgeosite.dat",
+}
     
 class DownloadGeoInfo(object):
     def __init__(self):
-        self.urls = {
-            "geoip.db":    "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2Flyc8503%2Fsing-box-rules%2Freleases%2Flatest%2Fdownload%2Fgeoip.db",
-            "geosite.db":  "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2Flyc8503%2Fsing-box-rules%2Freleases%2Flatest%2Fdownload%2Fgeosite.db",
-            "geoip.dat":   "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2FLoyalsoldier%2Fv2ray-rules-dat%2Freleases%2Flatest%2Fdownload%2Fgeoip.dat",
-            "geosite.dat": "https://ghproxy.com/?q=https%3A%2F%2Fgithub.com%2FLoyalsoldier%2Fv2ray-rules-dat%2Freleases%2Flatest%2Fdownload%2Fgeosite.dat",
-        }
+        self.urls = geoinfo_download_urls
     
     def parse(self)->str:
         for name, url in self.urls.items():
