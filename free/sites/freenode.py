@@ -59,7 +59,7 @@ class SiteFreeNode(SiteBase):
             for line in lines:
                 if verify_content(line):
                     result.append(line)
-        return "".join(result).encode("utf-8")
+        return "\n".join(result)
     
     def url(self)->str:
         return self.host
@@ -71,4 +71,6 @@ if __name__ == "__main__":
     if get_proxy() == dict():
         set_proxy("http://localhost:2019")
     s = SiteFreeNode()
-    print(s.parse())
+    r  = s.parse()
+    # print(r.encode('utf-8'))
+    print(r.split("\n"))

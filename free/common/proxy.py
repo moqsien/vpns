@@ -1,5 +1,6 @@
 # coding=UTF-8
 import os
+import chardet
 import requests
 
 VPNS_PROXY_ENV_NAME = "VPNS_DOWNLOAD_PROXY"

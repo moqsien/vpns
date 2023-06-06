@@ -35,4 +35,5 @@ class SiteMianfeifq(SiteBase):
     
 if __name__ == "__main__":
     s = SiteMianfeifq()
-    print(s.parse())
+    r = s.parse()
+    print(r.split("\n"))

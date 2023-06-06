@@ -3,9 +3,9 @@ import os
 import sys
 sys.path.append(".")
     
-import base64
 from lxml import etree
 from free.common.proxy import SiteBase
+from free.common.encrypt import decode_base64
 
 class SiteCfmem(SiteBase):
     def __init__(self):
@@ -35,9 +35,9 @@ class SiteCfmem(SiteBase):
         result = html.xpath('//span[@role="presentation"]/text()')
         if len(result) > 0:
             try:
-                return base64.b64decode(result[0]).decode('utf-8')
+                return str(decode_base64(result[0]), 'utf-8')
             except Exception as e:
-                print(f"Download [{self.url}] failed.")
+                print(f"Parse [{self.url}] failed.")
                 print(e)
         return ""
     
@@ -49,4 +49,5 @@ class SiteCfmem(SiteBase):
         
 if __name__ == '__main__':
     s = SiteCfmem()
-    print(s.parse())
+    r = s.parse()
+    print(r.split("\n"))

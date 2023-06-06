@@ -34,4 +34,10 @@ if __name__ == "__main__":
     if get_proxy() == dict():
         set_proxy("http://localhost:2019")
     s = SiteV2Cross()
-    print(s.parse())
+    r = s.parse()
+    sList = r.split("\n")
+    for i in sList:
+        try:
+            print(i)
+        except Exception as e:
+            print(e)

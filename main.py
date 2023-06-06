@@ -1,4 +1,6 @@
 # coding=UTF-8
+import json
+import datetime
 from free.sites.cfmem import SiteCfmem
 from free.sites.freenode import SiteFreeNode
 from free.sites.frees import SiteFreeSubscribes
@@ -6,32 +8,102 @@ from free.sites.geoinfo import DownloadGeoInfo
 from free.sites.mianfeifq import SiteMianfeifq
 from free.sites.v2cross import SiteV2Cross
 from free.sites.wenpblog import SiteWenpBlog
+from free.common.proxy import set_proxy
 
 class VPN(object):
     def __init__(self):
         self.tasks = [
             SiteCfmem(),
-            SiteFreeNode(),
             SiteFreeSubscribes(),
-            DownloadGeoInfo(),
+            SiteFreeNode(),
             SiteMianfeifq(),
-            SiteV2Cross(),
             SiteWenpBlog(),
+            SiteV2Cross(),
+            DownloadGeoInfo(),
         ]
         self.vmess = []
         self.vless = []
         self.trojan = []
         self.ss = []
         self.ssr = []
+        self.other = []
+    
+    def parse_other(self, line:str):
+        if line.find("vmess://"):
+            scheme = "vmess://"
+            result = self.vmess
+        elif line.find("vless://"):
+            scheme = "vless://"
+            result = self.vless
+        elif line.find("ss://"):
+            scheme = "ss://"
+            result = self.ss
+        elif line.find("ssr://"):
+            scheme = "ssr://"
+            result = self.ssr
+        elif line.find("trojan://"):
+            scheme = "trojan://"
+            result = self.trojan
+        else:
+            print(f"Unsupported vpn scheme: {line}")
+            if line not in self.other:
+                self.other.append(line)  
+            return
+        ll = line.split(scheme)
+        if len(ll) == 2:
+            result.append(f"{scheme}{ll[1]}")
         
-    def parse(self, contet:str):
-        pass
+    def parse(self, content:str):
+        for line in content.split("\n"):
+            if line.find("[") > 0:
+                continue
+            line = line.strip("\r")
+            if line.startswith("vmess://"):
+                if line not in self.vmess:
+                    self.vmess.append(line)
+            elif line.startswith("vless://"):
+                if line not in self.vless:
+                    self.vless.append(line)
+            elif line.startswith("ss://"):
+                if line not in self.ss:
+                    self.ss.append(line)
+            elif line.startswith("ssr://"):
+                if line not in self.ssr:
+                    self.ssr.append(line)
+            elif line.startswith("trojan://"):
+                if line not in self.trojan:
+                    self.trojan.append(line)
+            else:
+                self.parse_other(line)
     
     def run(self):
         for task in self.tasks:
-            content = task.parse()
+            try:
+                content = str(task.parse())
+            except Exception as e:
+                content = ""
+                print(e)
             if content == "":
                 continue
             else:
                 self.parse(content)
-            
+        if any([self.vmess, self.vless, self.ss, self.ssr, self.trojan]):
+            self.save_file("vpn.json")
+    
+    def save_file(self, filename:str):
+        result = {
+            "vmess": {"list": self.vmess, "total": len(self.vmess)},
+            "vless": {"list": self.vless, "total": len(self.vless)},
+            "ss": {"list": self.ss, "total": len(self.ss)},
+            "ssr": {"list": self.ssr, "total": len(self.ssr)},
+            "trojan": {"list": self.trojan, "total": len(self.trojan)},
+            "other": {"list": self.other, "total": len(self.other)},
+            "update_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        with open(filename, "w") as f:
+            json.dump(result, f, indent=4)
+
+if __name__ == "__main__":
+    set_proxy("http://localhost:2019")
+    v = VPN()
+    v.run()

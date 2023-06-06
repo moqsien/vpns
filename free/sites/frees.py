@@ -2,9 +2,9 @@
 import sys
 sys.path.append(".")
 
-import base64
 from datetime import datetime
 from free.common.proxy import set_proxy, SiteBase
+from free.common.encrypt import decode_base64
 
 class FreeUrl:
     def __init__(self, url:str, use_proxy: bool=False):
@@ -54,9 +54,8 @@ class SiteFreeSubscribes(SiteBase):
             content = self.get_resp(freeurl)
             try:
                 if content:
-                    r = str(base64.b64decode(content), "utf-8")
+                    r = str(decode_base64(content), "utf-8")
                     result += r
-                    # print(r)
             except Exception as e:
                 print(f"Download {freeurl.url} failed.")
                 print(e)
@@ -66,4 +65,5 @@ class SiteFreeSubscribes(SiteBase):
 if __name__ == "__main__":
     set_proxy("http://localhost:2019")
     s = SiteFreeSubscribes()
-    s.parse()
+    r = s.parse()
+    print(r.split("\n"))

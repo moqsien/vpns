@@ -4,6 +4,7 @@ sys.path.append(".")
 
 from lxml import etree
 from free.common.proxy import SiteBase
+from free.common.verify import verify_content
 
 class SiteWenpBlog(SiteBase):
     def __init__(self):
@@ -14,6 +15,7 @@ class SiteWenpBlog(SiteBase):
         resp = self.request(self.url)
         html = etree.HTML(resp)
         if html is None:
+            print(f"Download [{self.url}] failed.")
             return ""
         result = html.xpath('//div[@class="list-pic-body"]//h3/a/@href')
         if len(result) > 0:
@@ -27,14 +29,16 @@ class SiteWenpBlog(SiteBase):
         content = self.get_resp()
         html = etree.HTML(content)
         if html is None:
-            print(f"Download [{self.url}] failed.")
+            print(f"Parse [{self.url}] failed.")
             return ""
         result = html.xpath('//blockquote//text()')
         r = ""
         for line in result:
-            if line.endswith("\n"):
+            if verify_content(line):
+                
                 r += line
-        return r.rstrip("\n").encode("utf-8")
+                
+        return r
     
     def url(self)->str:
         return self.url
@@ -44,4 +48,10 @@ class SiteWenpBlog(SiteBase):
 
 if __name__ == '__main__':
     s = SiteWenpBlog()
-    print(s.parse())
+    r = s.parse()
+    rList = r.split("\n")
+    for p in rList:
+        try:
+            print(p)
+        except Exception as e:
+            print(e)
