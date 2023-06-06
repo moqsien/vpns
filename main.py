@@ -1,4 +1,5 @@
 # coding=UTF-8
+import os
 import json
 import datetime
 from free.sites.cfmem import SiteCfmem
@@ -10,6 +11,7 @@ from free.sites.v2cross import SiteV2Cross
 from free.sites.wenpblog import SiteWenpBlog
 from free.common.proxy import set_proxy, get_proxy
 from free.common.encrypt import AESCrypt
+from free.common.conf import Config
 
 class VPN(object):
     def __init__(self):
@@ -29,6 +31,9 @@ class VPN(object):
         self.ssr = []
         self.other = []
         self.filename = "conf.txt"
+        self.conf = Config()
+        self.store_dir = self.conf.store_dir
+        self.key = self.conf.key
     
     def parse_other(self, line:str):
         if line.find("vmess://"):
@@ -108,7 +113,7 @@ class VPN(object):
         json_str = json.dumps(result, indent=4, ensure_ascii=True)
         crypto = AESCrypt()
         content = crypto.Encrypt(json_str)
-        with open(self.filename, "wb") as f:
+        with open(os.path.join(self.store_dir, self.filename), "wb") as f:
             f.write(content)
 
 if __name__ == "__main__":
