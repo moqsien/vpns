@@ -8,7 +8,8 @@ from free.sites.geoinfo import DownloadGeoInfo
 from free.sites.mianfeifq import SiteMianfeifq
 from free.sites.v2cross import SiteV2Cross
 from free.sites.wenpblog import SiteWenpBlog
-from free.common.proxy import set_proxy
+from free.common.proxy import set_proxy, get_proxy
+from free.common.encrypt import AESCrypt
 
 class VPN(object):
     def __init__(self):
@@ -27,6 +28,7 @@ class VPN(object):
         self.ss = []
         self.ssr = []
         self.other = []
+        self.filename = "conf.txt"
     
     def parse_other(self, line:str):
         if line.find("vmess://"):
@@ -102,8 +104,16 @@ class VPN(object):
         }
         with open(filename, "w") as f:
             json.dump(result, f, indent=4)
+            
+        json_str = json.dumps(result, indent=4, ensure_ascii=True)
+        crypto = AESCrypt()
+        content = crypto.Encrypt(json_str)
+        with open(self.filename, "wb") as f:
+            f.write(content)
 
 if __name__ == "__main__":
-    set_proxy("http://localhost:2019")
+    # TODO: add config file and auto git push.
+    if not get_proxy():
+        set_proxy("http://localhost:2019")
     v = VPN()
     v.run()
