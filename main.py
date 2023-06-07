@@ -36,6 +36,8 @@ class VPN(object):
         self.conf = Config()
         self.store_dir = self.conf.store_dir
         self.key = self.conf.key
+        if self.conf.proxy:
+            set_proxy(self.conf.proxy)
     
     def parse_other(self, line:str):
         if line.find("vmess://"):
@@ -97,6 +99,7 @@ class VPN(object):
             else:
                 self.parse(content)
         if any([self.vmess, self.vless, self.ss, self.ssr, self.trojan]):
+            print(f"Download VPNs Statistics: vmess[{len(self.vmess)}] vless[{len(self.vless)}] ss[{len(self.ss)}] ssr[{len(self.ssr)}] trojan[{len(self.trojan)}]\n")
             self.save_file("vpn.json")
             self.git_push()
     
@@ -130,8 +133,5 @@ class VPN(object):
             
 
 if __name__ == "__main__":
-    # TODO: add config file and auto git push.
-    if not get_proxy():
-        set_proxy("http://localhost:2019")
     v = VPN()
     v.run()

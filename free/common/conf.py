@@ -7,12 +7,12 @@ class Config(object):
     def __init__(self, file_path:str=""):
         self.dir: str = file_path if file_path else os.getcwd()
         self.path = os.path.join(self.dir, "free_vpn_config.json")
-        print(self.path)
         self.dict: dict = dict()
         self.load()
         if len(self.dict) > 0:
             self._key = self.dict.get("key", "x^)dixf&*1$free]")
             self._store_dir = self.dict.get("store_dir", os.getcwd())
+            self._proxy = self.dict.get("proxy", "http://localhost:2019")
         else:
             self.set_config()
         store_dir = getattr(self, "store_dir")
@@ -31,12 +31,16 @@ class Config(object):
     def set_config(self):
         self._key = input("Set encryption key:\n").strip(" ")
         self._store_dir = input("Set restore directory:\n").strip(" ")
+        self._proxy = input("Set local proxy:\n").strip(" ")
         if len(self.key) != 16:
             self._key = "x^)dixf&*1$free]"
         if not os.path.exists(self.store_dir):
             self._store_dir = os.getcwd()
+        if not self._proxy:
+            self._proxy = "http://localhost:2019"
         self.dict["key"] = self._key
         self.dict["store_dir"] = self._store_dir
+        self.dict["proxy"] = self._proxy
         self.save()
 
     @property
@@ -46,6 +50,10 @@ class Config(object):
     @property
     def store_dir(self):
         return self._store_dir
+    
+    @property
+    def proxy(self):
+        return self._proxy
 
 if __name__ == "__main__":
     # TODO: config file stored to current working directory.

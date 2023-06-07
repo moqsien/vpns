@@ -16,15 +16,16 @@ geoinfo_download_urls = {
 class DownloadGeoInfo(object):
     def __init__(self):
         self.urls = geoinfo_download_urls
-        self.store_dir = os.environ.get(STORE_DIR_ENV_NAME)
-        if not self.store_dir:
-            self.store_dir = os.path.abspath(".")
     
     def parse(self)->str:
+        store_dir = os.environ.get(STORE_DIR_ENV_NAME)
+        if not store_dir:
+            store_dir = os.getcwd()
+
         for name, url in self.urls.items():
             print(f"Downloading {name}...")
             resp = requests.get(url)
-            with open(os.path.join(self.store_dir, name), 'wb') as f:
+            with open(os.path.join(store_dir, name), 'wb') as f:
                 f.write(resp.content)
         return ""
 
