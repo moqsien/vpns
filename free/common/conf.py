@@ -63,7 +63,7 @@ class Config(object):
         self.dict["store_dir"] = self._store_dir
         self.dict["proxy"] = self._proxy
         print("You are saving freevpn config file...")
-        print(f"EncryptionKey: {self._key}, StoreDir: {self._store_dir}, LocalProxy: {self._proxy}")
+        print("EncryptionKey: %s, StoreDir: %s, LocalProxy: %s".format(self._key, self._store_dir, self._proxy))
         self.save()
 
     @property

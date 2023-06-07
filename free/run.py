@@ -137,7 +137,7 @@ class VPN(object):
         self.conf.set_config()
     
     def show_config(self):
-        print(f"EncryptionKey: {self.conf.key}, StoreDir: {self.conf.store_dir}, LocalProxy: {self.conf.proxy}")
+        print(f"EncryptionKey: [ {self.conf.key.decode()} ], StoreDir: [ {self.conf.store_dir} ], LocalProxy: [ {self.conf.proxy} ]")
         print(f"freevpn config file: [{self.conf.path}]")
 
 def Run():
