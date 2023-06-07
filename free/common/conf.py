@@ -63,7 +63,7 @@ class Config(object):
         self.dict["store_dir"] = self._store_dir
         self.dict["proxy"] = self._proxy
         print("You are saving freevpn config file...")
-        print("EncryptionKey: %s, StoreDir: %s, LocalProxy: %s".format(self._key, self._store_dir, self._proxy))
+        print(f"EncryptionKey: [ {self._key} ], StoreDir: [ {self._store_dir} ], LocalProxy: [ {self._proxy} ]")
         self.save()
 
     @property
@@ -79,11 +79,10 @@ class Config(object):
         return self._proxy
     
     def random_key(self)->str:
-        sample_str_all = string.ascii_letters + string.digits + string.punctuation
+        sample_str_all = string.ascii_letters + string.digits + "!@#$*"
         _key = "n" + "".join(random.sample(sample_str_all, 15))
         return _key
 
 if __name__ == "__main__":
-    # TODO: automatically generate aes key.
     print(random.sample('abcdefghijklmnopqrstuvwxyz!@#$%^&*1234567890',16))
     print(string.punctuation)
