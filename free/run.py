@@ -88,6 +88,7 @@ class VPN(object):
                 self.parse_other(line)
     
     def run(self):
+        print(f"Download Files will be restored in {self.store_dir}")
         for task in self.tasks:
             try:
                 content = str(task.parse())
@@ -130,8 +131,10 @@ class VPN(object):
             subprocess.call(["git", "commit", "-m", "update"])
             subprocess.call(["git", "push"])
             os.chdir(self.cwd)
-            
 
-if __name__ == "__main__":
+def Run():
     v = VPN()
     v.run()
+
+if __name__ == "__main__":
+    Run()

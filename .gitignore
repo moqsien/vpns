@@ -5,3 +5,6 @@ __pycache__
 *.dat
 *.json
 *.txt
+Free.egg-info
+build
+dist
