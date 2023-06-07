@@ -1,5 +1,6 @@
 # coding=UTF-8
 import os
+import sys
 import json
 import datetime
 import subprocess
@@ -131,10 +132,23 @@ class VPN(object):
             subprocess.call(["git", "commit", "-m", "update"])
             subprocess.call(["git", "push"])
             os.chdir(self.cwd)
+    
+    def set_config_file(self):
+        self.conf.set_config()
+    
+    def show_config(self):
+        print(f"EncryptionKey: {self.conf.key}, StoreDir: {self.conf.store_dir}, LocalProxy: {self.conf.proxy}")
+        print(f"freevpn config file: [{self.conf.path}]")
 
 def Run():
     v = VPN()
-    v.run()
+    args = sys.argv
+    if len(args) > 2:
+        v.show_config()
+    elif len(args) == 2:
+        v.set_config_file()
+    else:
+        v.run()
 
 if __name__ == "__main__":
     Run()
