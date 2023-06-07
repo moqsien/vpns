@@ -119,7 +119,7 @@ class VPN(object):
             json.dump(result, f, indent=4)
             
         json_str = json.dumps(result, indent=4, ensure_ascii=True)
-        crypto = AESCrypt()
+        crypto = AESCrypt(self.key)
         content = crypto.Encrypt(json_str)
         with open(os.path.join(self.store_dir, self.filename), "wb") as f:
             f.write(content)
