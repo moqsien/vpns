@@ -5,14 +5,14 @@ STORE_DIR_ENV_NAME = "FREE_VPN_STORE_DIR"
 
 class Config(object):
     def __init__(self, file_path:str=""):
-        self.dir: str = file_path if file_path else os.path.abspath(".")
+        self.dir: str = file_path if file_path else os.getcwd()
         self.path = os.path.join(self.dir, "free_vpn_config.json")
         print(self.path)
         self.dict: dict = dict()
         self.load()
         if len(self.dict) > 0:
             self._key = self.dict.get("key", "x^)dixf&*1$free]")
-            self._store_dir = self.dict.get("store_dir", os.path.abspath("."))
+            self._store_dir = self.dict.get("store_dir", os.getcwd())
         else:
             self.set_config()
         store_dir = getattr(self, "store_dir")
@@ -34,7 +34,7 @@ class Config(object):
         if len(self.key) != 16:
             self._key = "x^)dixf&*1$free]"
         if not os.path.exists(self.store_dir):
-            self._store_dir = os.path.abspath(".")
+            self._store_dir = os.getcwd()
         self.dict["key"] = self._key
         self.dict["store_dir"] = self._store_dir
         self.save()

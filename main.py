@@ -2,6 +2,7 @@
 import os
 import json
 import datetime
+import subprocess
 from free.sites.cfmem import SiteCfmem
 from free.sites.freenode import SiteFreeNode
 from free.sites.frees import SiteFreeSubscribes
@@ -15,6 +16,7 @@ from free.common.conf import Config
 
 class VPN(object):
     def __init__(self):
+        self.cwd = os.getcwd()
         self.tasks = [
             SiteCfmem(),
             SiteFreeSubscribes(),
@@ -96,6 +98,7 @@ class VPN(object):
                 self.parse(content)
         if any([self.vmess, self.vless, self.ss, self.ssr, self.trojan]):
             self.save_file("vpn.json")
+            self.git_push()
     
     def save_file(self, filename:str):
         result = {
@@ -115,6 +118,16 @@ class VPN(object):
         content = crypto.Encrypt(json_str)
         with open(os.path.join(self.store_dir, self.filename), "wb") as f:
             f.write(content)
+            
+    def git_push(self):
+        git_dir = os.path.join(self.store_dir, ".git")
+        if  os.path.exists(git_dir):
+            os.chdir(self.store_dir)
+            subprocess.call(["git", "add", "."])
+            subprocess.call(["git", "commit", "-m", "update"])
+            subprocess.call(["git", "push"])
+            os.chdir(self.cwd)
+            
 
 if __name__ == "__main__":
     # TODO: add config file and auto git push.
