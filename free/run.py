@@ -4,6 +4,7 @@ import sys
 import json
 import datetime
 import subprocess
+from free.sites.butnono import SiteButNoNo
 from free.sites.cfmem import SiteCfmem
 from free.sites.freenode import SiteFreeNode
 from free.sites.frees import SiteFreeSubscribes
@@ -19,6 +20,7 @@ class VPN(object):
     def __init__(self):
         self.cwd = os.getcwd()
         self.tasks = [
+            SiteButNoNo(),
             SiteCfmem(),
             SiteFreeSubscribes(),
             SiteFreeNode(),

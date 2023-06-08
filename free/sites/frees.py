@@ -41,6 +41,7 @@ class SiteFreeSubscribes(SiteBase):
             FreeUrl("https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt", True),
             FreeUrl("https://raw.githubusercontent.com/tbbatbb/Proxy/master/dist/v2ray.config.txt", True),
             FreeUrl("https://raw.githubusercontent.com/vveg26/get_proxy/main/dist/v2ray.config.txt", True),
+            FreeUrl("https://raw.githubusercontent.com/baip01/yhkj/main/v2ray", True),
             FreeUrl("https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2", True)
         ]
     
