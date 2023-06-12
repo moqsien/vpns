@@ -9,10 +9,11 @@ from free.sites.cfmem import SiteCfmem
 from free.sites.freenode import SiteFreeNode
 from free.sites.frees import SiteFreeSubscribes
 from free.sites.geoinfo import DownloadGeoInfo
+from free.sites.cloudflare import DownloadCloudFlare
 from free.sites.mianfeifq import SiteMianfeifq
 from free.sites.v2cross import SiteV2Cross
 from free.sites.wenpblog import SiteWenpBlog
-from free.common.proxy import set_proxy, get_proxy
+from free.common.proxy import set_proxy
 from free.common.encrypt import AESCrypt
 from free.common.conf import Config
 
@@ -28,6 +29,7 @@ class VPN(object):
             SiteWenpBlog(),
             SiteV2Cross(),
             DownloadGeoInfo(),
+            DownloadCloudFlare(),
         ]
         self.vmess = []
         self.vless = []
