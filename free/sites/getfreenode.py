@@ -26,6 +26,7 @@ class SiteGetFreeNode(SiteBase):
     
     def parse(self)->str:
         result = ""
+        print(f"processing {self.url}...")
         resp = self.get_resp(self.url)
         result = decode_base64(resp).decode("utf-8")
         return result.strip("\n")
