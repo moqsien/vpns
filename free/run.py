@@ -13,6 +13,7 @@ from free.sites.cloudflare import DownloadCloudFlare
 from free.sites.mianfeifq import SiteMianfeifq
 from free.sites.v2cross import SiteV2Cross
 from free.sites.wenpblog import SiteWenpBlog
+from free.sites.getfreenode import SiteGetFreeNode
 from free.common.proxy import set_proxy
 from free.common.encrypt import AESCrypt
 from free.common.conf import Config
@@ -21,6 +22,7 @@ class VPN(object):
     def __init__(self):
         self.cwd = os.getcwd()
         self.tasks = [
+            SiteGetFreeNode(),
             SiteButNoNo(),
             SiteCfmem(),
             SiteFreeSubscribes(),
