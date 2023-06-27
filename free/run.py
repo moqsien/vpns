@@ -6,6 +6,7 @@ import datetime
 import subprocess
 from free.sites.butnono import SiteButNoNo
 from free.sites.cfmem import SiteCfmem
+from free.sites.cfmem_rss import SiteCfmemRSS
 from free.sites.freenode import SiteFreeNode
 from free.sites.frees import SiteFreeSubscribes
 from free.sites.geoinfo import DownloadGeoInfo
@@ -25,6 +26,7 @@ class VPN(object):
             SiteGetFreeNode(),
             SiteButNoNo(),
             SiteCfmem(),
+            SiteCfmemRSS(),
             SiteFreeSubscribes(),
             SiteFreeNode(),
             SiteMianfeifq(),
