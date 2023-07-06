@@ -20,9 +20,7 @@ class SiteFreeSubscribes(SiteBase):
         date_str = datetime.now().strftime("%Y/%m/%Y%m%d")
         self.urls = [
             FreeUrl("https://bulink.me/sub/q2kpq/vm"),
-            FreeUrl("https://raw.fastgit.org/freefq/free/master/v2"),
             FreeUrl("https://sub.nicevpn.top/long"),
-            FreeUrl("https://raw.fastgit.org/Pawdroid/Free-servers/main/sub"),
             FreeUrl("https://sub.sharecentre.online/sub"),
             FreeUrl(f"https://clashnode.com/wp-content/uploads/{date_str}.txt"),
             FreeUrl(f"https://nodefree.org/dy/{date_str}.txt"),
@@ -35,6 +33,8 @@ class SiteFreeSubscribes(SiteBase):
             FreeUrl("https://freefq.neocities.org/free.txt"),
             FreeUrl("https://gitlab.com/api/v4/projects/36060645/repository/files/data%2Fv2ray%2FtvNUi5rjr.txt/raw?ref=main&private_token=glpat-iC4t7zq8nsV2xKYseBfU"),
             FreeUrl("https://tt.vg/ZlJdd", True),
+            FreeUrl("https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub", True),
+            FreeUrl("https://raw.githubusercontent.com/freefq/free/master/v2", True),
             FreeUrl("https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray", True),
             FreeUrl("https://raw.githubusercontent.com/ssrsub/ssr/master/ss-sub", True),
             FreeUrl("https://raw.githubusercontent.com/ssrsub/ssr/master/V2Ray", True),
