@@ -28,7 +28,7 @@ class VPN(object):
             SiteCfmem(),
             SiteCfmemRSS(),
             SiteFreeSubscribes(),
-            SiteFreeNode(),
+            # SiteFreeNode(),
             SiteMianfeifq(),
             SiteWenpBlog(),
             SiteV2Cross(),
