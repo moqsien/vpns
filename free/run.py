@@ -32,7 +32,7 @@ class VPN(object):
             SiteMianfeifq(),
             SiteWenpBlog(),
             SiteV2Cross(),
-            DownloadGeoInfo(),
+            # DownloadGeoInfo(),
             DownloadCloudFlare(),
         ]
         self.vmess = []

@@ -2,21 +2,27 @@ import os
 import json
 import random
 import string
+import pathlib
 
 STORE_DIR_ENV_NAME = "FREE_VPN_STORE_DIR"
 
 DEFAULT_AES_KEY = "x^)dixf&*1$free]"
 DEFAULT_LOCAL_PROXY = "http://localhost:2019"
 
+def get_home_dir():
+    homedir = str(pathlib.Path.home())
+    return homedir
+
 class Config(object):
     def __init__(self, file_path:str=""):
-        self.dir: str = file_path if file_path else os.getcwd()
+        homedir = get_home_dir()
+        self.dir: str = file_path if file_path else homedir
         self.path = os.path.join(self.dir, "free_vpn_config.json")
         self.dict: dict = dict()
         self.load()
         if len(self.dict) > 0:
             self._key = self.dict.get("key", DEFAULT_AES_KEY)
-            self._store_dir = self.dict.get("store_dir", os.getcwd())
+            self._store_dir = self.dict.get("store_dir", homedir)
             self._proxy = self.dict.get("proxy", DEFAULT_LOCAL_PROXY)
         else:
             self.set_config()
@@ -56,7 +62,7 @@ class Config(object):
         if len(self.key) != 16:
             self._key = DEFAULT_AES_KEY
         if not os.path.exists(self.store_dir):
-            self._store_dir = os.getcwd()
+            self._store_dir = get_home_dir()
         if not self._proxy:
             self._proxy = DEFAULT_LOCAL_PROXY
         self.dict["key"] = self._key
